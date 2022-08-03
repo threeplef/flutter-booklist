@@ -38,7 +38,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
           ),
           TextField(
             controller: _authorTextController,
-            keyboardType: TextInputType.text,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: '저자',
