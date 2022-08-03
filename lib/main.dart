@@ -1,4 +1,4 @@
-import 'package:book_list_app/book_list_screen.dart';
+import 'package:book_list_app/book_list/book_list_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const BookListScreen(),
+      home: BookListScreen(),
     );
   }
 }
