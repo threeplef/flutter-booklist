@@ -42,10 +42,7 @@ class BookListScreen extends StatelessWidget {
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
-                      FirebaseFirestore.instance
-                          .collection('books')
-                          .doc(document.id)
-                          .delete();
+                      BookListViewModel().deleteBook(document: document);
                     },
                   ),
                 );
