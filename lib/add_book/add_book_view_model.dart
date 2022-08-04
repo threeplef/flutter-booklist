@@ -9,4 +9,8 @@ class AddBookViewModel {
       "author": author,
     });
   }
+
+  bool isValid(String title, String author) {
+    return title.isEmpty || author.isEmpty;
+  }
 }
