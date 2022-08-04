@@ -31,12 +31,18 @@ class BookListScreen extends StatelessWidget {
                 Map<String, dynamic> data =
                     document.data()! as Map<String, dynamic>;
                 return ListTile(
+                  leading: Image.network(
+                    data['imageUrl'],
+                    width: 100,
+                    height: 100,
+                  ),
                   title: Text(data['title']),
                   subtitle: Text(data['author']),
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => UpdateBookScreen(document)),
+                      MaterialPageRoute(
+                          builder: (context) => UpdateBookScreen(document)),
                     );
                   },
                   trailing: IconButton(
