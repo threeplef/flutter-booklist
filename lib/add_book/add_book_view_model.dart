@@ -7,6 +7,16 @@ class AddBookViewModel {
   final _db = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
 
+  bool isLoading = false;
+
+  void startLoading() {
+    isLoading = true;
+  }
+
+  void endLoading() {
+    isLoading = false;
+  }
+
   Future uploadImage(String fileName, Uint8List bytes) async {
     final storageRef = _storage.ref().child('book_cover/$fileName.jpg');
     await storageRef.putData(bytes);
@@ -31,7 +41,7 @@ class AddBookViewModel {
     });
   }
 
-  bool isValid(String title, String author) {
+  bool isInvalid(String title, String author) {
     return title.isEmpty || author.isEmpty;
   }
 }
