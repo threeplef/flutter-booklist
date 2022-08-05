@@ -14,6 +14,14 @@ class BookListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('도서 리스트 앱'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              viewModel.logout();
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: viewModel.booksStream,
