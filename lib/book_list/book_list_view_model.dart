@@ -10,15 +10,16 @@ class BookListViewModel {
   Stream<QuerySnapshot<Book>> get booksStream => _db
       .collection('books')
       .withConverter<Book>(
-      fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data()!),
-      toFirestore: (book, _) => book.toJson())
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data()!),
+          toFirestore: (book, _) => book.toJson())
       .snapshots();
 
   void deleteBook({required DocumentSnapshot document}) {
     _db.collection('books').doc(document.id).delete();
   }
 
-  void logout() {
-    FirebaseAuth.instance.signOut();
+  void logout() async {
+    await _googleSignIn.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 }
