@@ -28,47 +28,91 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('로그인'),
+        backgroundColor: const Color(0xFFFFEC60),
+        title: const Center(
+            child: Text(
+          '로그인',
+          style: TextStyle(color: Colors.black),
+        )),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            controller: _emailTextController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '이메일',
+          Padding(
+            padding: const EdgeInsets.fromLTRB(25, 0, 25, 15),
+            child: SizedBox(
+              height: 50,
+              child: TextField(
+                controller: _emailTextController,
+                decoration: const InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.black26, width: 1.0)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFFA351F7), width: 1.0)),
+                  hintText: '이메일',
+                  contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 15),
+                  isCollapsed: true,
+                ),
+              ),
             ),
           ),
-          TextField(
-            controller: _passwordTextController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '패스워드',
+          Padding(
+            padding: const EdgeInsets.fromLTRB(25, 0, 25, 15),
+            child: SizedBox(
+              height: 50,
+              child: TextField(
+                controller: _passwordTextController,
+                decoration: const InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.black26, width: 1.0)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFFA351F7), width: 1.0)),
+                  hintText: '패스워드',
+                  contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 15),
+                  isCollapsed: true,
+                ),
+              ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                UserCredential userCredential = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: _emailTextController.text,
-                        password: _passwordTextController.text)
-                    .then((value) {
-                  value.user!.emailVerified == true
-                      ? Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => BookListScreen()))
-                      : FlutterDialogInvaild();
-                  return value;
-                });
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'user-not-found') {
-                  FlutterDialogRegister();
-                } else if (e.code == 'wrong-password') {
-                  FlutterDialogPassword();
+          SizedBox(
+            width: 340,
+            height: 45,
+            child: ElevatedButton(
+              onPressed: () async {
+                try {
+                  UserCredential userCredential = await FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
+                      .then((value) {
+                    value.user!.emailVerified == true
+                        ? Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => BookListScreen()))
+                        : FlutterDialogInvaild();
+                    return value;
+                  });
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'user-not-found') {
+                    FlutterDialogRegister();
+                  } else if (e.code == 'wrong-password') {
+                    FlutterDialogPassword();
+                  }
                 }
-              }
-            },
-            child: const Text('로그인'),
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: const Color(0xFFA351F7),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50)),
+                  side: const BorderSide(width: 2.0, color: Color(0xFFA351F7))),
+              child: const Text(
+                '로그인',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -77,13 +121,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 MaterialPageRoute(builder: (context) => const SignUpScreen()),
               );
             },
-            child: const Text('회원가입'),
+            child: const Text('회원가입',
+                style: TextStyle(fontSize: 15, color: Color(0xFFA351F7))),
           ),
-          ElevatedButton(
-            onPressed: () {
-              viewModel.signInWithGoogle();
-            },
-            child: const Text('Google 로그인'),
+          const SizedBox(height: 30),
+          SizedBox(
+            width: 340,
+            height: 45,
+            child: ElevatedButton(
+              onPressed: () {
+                viewModel.signInWithGoogle();
+              },
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50)),
+                  side: const BorderSide(width: 1.0, color: Colors.black26)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.network(
+                      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
+                      width: 25),
+                  const SizedBox(width: 7),
+                  const Text(
+                    'Google로 로그인',
+                    style: TextStyle(fontSize: 15, color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
