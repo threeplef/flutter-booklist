@@ -50,7 +50,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       password: _passwordTextController.text)
                       .then((value) {
                     if (value.user!.email == null) {
-                      FlutterDialogPassword();
                     } else {
                       Navigator.pop(context);
                     }
@@ -64,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     FlutterDialogAlreadyUsed();
                   }
                 } catch (e) {
-                  print('끝');
+                  Navigator.pop(context);
                 }
               },
               child: const Text('회원가입'))

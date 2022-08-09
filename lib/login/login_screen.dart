@@ -52,15 +52,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 UserCredential userCredential = await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
                         email: _emailTextController.text,
-                        password:
-                            _passwordTextController.text)
+                        password: _passwordTextController.text)
                     .then((value) {
                   value.user!.emailVerified == true
                       ? Navigator.push(context,
                           MaterialPageRoute(builder: (_) => BookListScreen()))
-                      : Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => BookListScreen()));
-                  // : FlutterDialogInvaild();
+                      : FlutterDialogInvaild();
                   return value;
                 });
               } on FirebaseAuthException catch (e) {
