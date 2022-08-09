@@ -23,52 +23,114 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('회원 가입'),
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: const Color(0xFFFFEC60),
+        title: const Text('회원가입', style: TextStyle(color: Colors.black)),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _emailTextController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '이메일',
+      body: Container(
+        color: const Color(0xFFFDFAF3),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 80.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(25, 0, 25, 15),
+                  child: Text('하늘의 서재에 오신 것을 환영합니다! \n마음에 드는 다양한 책을 읽고 기록해보세요.',
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center),
+                ),
+                Image.network(
+                    'https://www.millie.co.kr/favicon/millie_og_v2_2.png',
+                    width: 360),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 15),
+                  child: SizedBox(
+                    height: 50,
+                    child: TextField(
+                      controller: _emailTextController,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black26, width: 1.0)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color(0xFFA351F7), width: 1.0)),
+                        hintText: '이메일',
+                        contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 15),
+                        isCollapsed: true,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 15),
+                  child: SizedBox(
+                    height: 50,
+                    child: TextField(
+                      controller: _passwordTextController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black26, width: 1.0)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color(0xFFA351F7), width: 1.0)),
+                        hintText: '패스워드',
+                        contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 15),
+                        isCollapsed: true,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 340,
+                  height: 45,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .createUserWithEmailAndPassword(
+                                  email: _emailTextController.text,
+                                  password: _passwordTextController.text)
+                              .then((value) {
+                            if (value.user!.email == null) {
+                            } else {
+                              Navigator.pop(context);
+                            }
+                            return value;
+                          });
+                          FirebaseAuth.instance.currentUser
+                              ?.sendEmailVerification();
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                            FlutterDialogPassword();
+                          } else if (e.code == 'email-already-in-use') {
+                            FlutterDialogAlreadyUsed();
+                          }
+                        } catch (e) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: const Color(0xFFFFEC60),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50))),
+                      child: const Text('회원가입',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFA351F7)))),
+                )
+              ],
             ),
           ),
-          TextField(
-            controller: _passwordTextController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '패스워드',
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () async {
-                try {
-                  UserCredential userCredential = await FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                      email: _emailTextController.text,
-                      password: _passwordTextController.text)
-                      .then((value) {
-                    if (value.user!.email == null) {
-                    } else {
-                      Navigator.pop(context);
-                    }
-                    return value;
-                  });
-                  FirebaseAuth.instance.currentUser?.sendEmailVerification();
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'weak-password') {
-                    FlutterDialogPassword();
-                  } else if (e.code == 'email-already-in-use') {
-                    FlutterDialogAlreadyUsed();
-                  }
-                } catch (e) {
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('회원가입'))
-        ],
+        ),
       ),
     );
   }
