@@ -36,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           TextField(
             controller: _passwordTextController,
+            obscureText: true,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: '패스워드',
