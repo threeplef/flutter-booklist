@@ -94,16 +94,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     UserCredential userCredential = await FirebaseAuth.instance
                         .signInWithEmailAndPassword(
                             email: _emailTextController.text,
-                            password: _passwordTextController.text)
-                        .then((value) {
-                      value.user!.emailVerified == true
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => BookListScreen()))
-                          : FlutterDialogInvaild();
-                      return value;
-                    });
+                            password: _passwordTextController.text);
+
+                    if (userCredential.user!.emailVerified == true) {
+                    } else {
+                      FlutterDialogInvaild();
+                    }
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       FlutterDialogRegister();
