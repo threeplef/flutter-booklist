@@ -8,7 +8,7 @@ class LoginViewModel {
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
-    await googleUser?.authentication;
+        await googleUser?.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -18,5 +18,13 @@ class LoginViewModel {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future signInWithEmailAndPassword(
+      {required String email, required String password}) async {
+    {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    }
   }
 }

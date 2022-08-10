@@ -1,4 +1,3 @@
-import 'package:book_list_app/book_list/book_list_screen.dart';
 import 'package:book_list_app/login/login_view_model.dart';
 import 'package:book_list_app/sign_up/sign_up_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -93,18 +92,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   try {
                     UserCredential userCredential = await FirebaseAuth.instance
                         .signInWithEmailAndPassword(
-                            email: _emailTextController.text,
-                            password: _passwordTextController.text);
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text);
 
                     if (userCredential.user!.emailVerified == true) {
                     } else {
-                      FlutterDialogInvaild();
+                      flutterDialog('이메일이 확인되지 않았습니다.');
                     }
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
-                      FlutterDialogRegister();
+                      flutterDialog('등록되지 않은 이메일입니다.');
                     } else if (e.code == 'wrong-password') {
-                      FlutterDialogPassword();
+                      flutterDialog('비밀번호가 다릅니다.');
                     }
                   }
                 },
@@ -175,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void FlutterDialogInvaild() {
+  void flutterDialog(String message) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -192,78 +191,12 @@ class _LoginScreenState extends State<LoginScreen> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Text('이메일이 확인되지 않았습니다!'),
+              children: <Widget>[
+                Text(message),
               ],
             ),
             actions: <Widget>[
-              FlatButton(
-                child: const Text('확인'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
-  }
-
-  void FlutterDialogRegister() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            title: Column(
-              children: const <Widget>[
-                Text('알림'),
-              ],
-            ),
-            //
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Text('등록되지 않은 이메일입니다.'),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('확인'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
-  }
-
-  void FlutterDialogPassword() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            title: Column(
-              children: const <Widget>[
-                Text('알림'),
-              ],
-            ),
-            //
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Text('비밀번호가 틀렸습니다.'),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: const Text('확인'),
                 onPressed: () {
                   Navigator.pop(context);

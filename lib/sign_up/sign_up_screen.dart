@@ -96,21 +96,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               .instance
                               .createUserWithEmailAndPassword(
                                   email: _emailTextController.text,
-                                  password: _passwordTextController.text)
-                              .then((value) {
-                            if (value.user!.email == null) {
+                                  password: _passwordTextController.text);
+                            if (userCredential.user!.email == null) {
                             } else {
                               Navigator.pop(context);
                             }
-                            return value;
-                          });
                           FirebaseAuth.instance.currentUser
                               ?.sendEmailVerification();
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
-                            FlutterDialogPassword();
+                            flutterDialog('비밀번호가 너무 약합니다. 6자 이상의 비밀번호를 입력해주세요.');
                           } else if (e.code == 'email-already-in-use') {
-                            FlutterDialogAlreadyUsed();
+                            flutterDialog('이미 사용 중인 이메일입니다.');
                           }
                         } catch (e) {
                           Navigator.pop(context);
@@ -135,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void FlutterDialogPassword() {
+  void flutterDialog(String message) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -152,12 +149,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Text('비밀번호 보안이 너무 약합니다. 영문, 숫자, 기호를 포함한 8자리를 입력해주세요.'),
+              children: <Widget>[
+                Text(message),
               ],
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: const Text('확인'),
                 onPressed: () {
                   Navigator.pop(context);
@@ -168,36 +165,4 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
   }
 
-  void FlutterDialogAlreadyUsed() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            title: Column(
-              children: const <Widget>[
-                Text('알림'),
-              ],
-            ),
-            //
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Text('이미 사용 중인 이메일입니다.'),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('확인'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
-  }
 }
