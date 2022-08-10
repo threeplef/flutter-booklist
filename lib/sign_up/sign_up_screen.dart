@@ -105,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ?.sendEmailVerification();
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
-                            flutterDialog('비밀번호가 너무 약합니다. 6자 이상의 비밀번호를 입력해주세요.');
+                            flutterDialog('비밀번호 보안이 약합니다. \n6자 이상 입력해주세요.');
                           } else if (e.code == 'email-already-in-use') {
                             flutterDialog('이미 사용 중인 이메일입니다.');
                           }
@@ -150,12 +150,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(message),
+                Center(child: Text(message, textAlign: TextAlign.center)),
               ],
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('확인'),
+                child: const Center(child: Text('확인')),
                 onPressed: () {
                   Navigator.pop(context);
                 },

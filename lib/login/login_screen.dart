@@ -192,12 +192,12 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(message),
+                Center(child: Text(message)),
               ],
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('확인'),
+                child: const Center(child: Text('확인')),
                 onPressed: () {
                   Navigator.pop(context);
                 },
