@@ -1,3 +1,4 @@
+import 'package:book_list_app/model/book.dart';
 import 'package:book_list_app/update_book/update_book_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,6 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
   final _authorTextController = TextEditingController();
 
   final viewModel = UpdateBookViewModel();
-
-  Map<String, dynamic> data = {};
-
-  @override
-  void initState() {
-    data = widget.document.data()! as Map<String, dynamic>;
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -44,14 +37,14 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
             controller: _titleTextController,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              hintText: data['title'],
+              hintText: widget.document['title'],
             ),
           ),
           TextField(
             controller: _authorTextController,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              hintText: data['author'],
+              hintText: widget.document['author'],
             ),
           ),
         ],
